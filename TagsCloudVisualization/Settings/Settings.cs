@@ -14,12 +14,14 @@ namespace TagsCloudVisualization.Settings
         public int MaxFontSize = 40;
         public int MinFontSize = 20;
 
+        public string SuitablePos { get; set; }
         public string FontName = "Comic Sans MS";
         public Point Center;
         public Settings() => Center = new Point(Width / 2, Height / 2);
 
         public Settings(Options opt)
         {
+            SuitablePos = opt.SuitablePos;
             Width = opt.Width;
             Height = opt.Height;
             WordCount = opt.WordCount;

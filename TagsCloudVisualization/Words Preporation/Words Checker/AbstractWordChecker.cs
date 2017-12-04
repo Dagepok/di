@@ -18,7 +18,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Checker
                 if (wordsByCount.ContainsKey(word))
                     wordsByCount[word]++;
                 else wordsByCount.Add(word, 1);
-            return wordsByCount.OrderByDescending(x => x.Value).Take(Settings.WordCount)
+            return wordsByCount.OrderByDescending(x=>x.Value).Take(Settings.WordCount)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
     }

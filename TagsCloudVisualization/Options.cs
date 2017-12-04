@@ -23,8 +23,11 @@ namespace TagsCloudVisualization
         [Option('f', "fontName", DefaultValue = "Comic Sans MS", HelpText = "Font Name")]
         public string FontName { get; set; }
 
-        [Option('k', "fontSize", DefaultValue = 20, HelpText = "Font Size")]
+        [Option('k', "fontSize", DefaultValue = 60, HelpText = "Font Size")]
         public int FontSize { get; set; }
+
+        [Option('p', "partOfSpeech", HelpText = "Font Size")]
+        public string SuitablePos { get; set; }
 
         [HelpOption]
         public string GetUsage()
