@@ -1,105 +1,103 @@
-﻿//using System;
-//using System.Drawing;
-//using System.Drawing.Imaging;
-//using System.IO;
-//using System.Linq;
-//using FluentAssertions;
-//using NUnit.Framework;
-//using NUnit.Framework.Interfaces;
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
+using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.LogarithmicalSpiral;
+using TagsCloudVisualization.Settings;
 
-//namespace TagsCloudVisualization
-//{
-//    [TestFixture]
-//    public class CircularCloudLayouterTests
-//    {
-       
-//        private CircularCloudLayouter circularCloud;
+namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter
+{
+    [TestFixture]
+    public class CircularCloudLayouterTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            var settings = new Settings.Settings();
+            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings(settings)),
+                settings);
+        }
 
-//        [TestCase(0, TestName = "NoElements_AfterCreating")]
-//        [TestCase(1, TestName = "OneElement_AfterOneAddition")]
-//        [TestCase(2, TestName = "TwoElements_AfterTwoAdditions")]
-//        [Timeout(1000)]
-//        public void CircularCloudLayouter_ShouldHave(int count)
-//        {
-//            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings()));
+        private CircularCloudLayouter circularCloud;
 
-//            FillCloudWithRandomRectangles(count);
+        [TestCase(0, TestName = "NoElements_AfterCreating")]
+        [TestCase(1, TestName = "OneElement_AfterOneAddition")]
+        [TestCase(2, TestName = "TwoElements_AfterTwoAdditions")]
+        [Timeout(1000)]
+        public void CircularCloudLayouter_ShouldHave(int count)
+        {
+            FillCloudWithRandomRectangles(count);
 
-//            circularCloud.Rectangles.WordCount.Should().Be(count);
-//        }
+            circularCloud.Rectangles.Count.Should().Be(count);
+        }
 
-//        [Test]
-//        [Timeout(1000)]
-//        public void CircularCloudLayouter_FirstRectangle_HaveRightPosition()
-//        {
-//            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings()));
+        [TestCase(10, 10, TestName = "When positive size")]
+        [TestCase(0, 0, TestName = "When zero size")]
+        [TestCase(-10, -10, TestName = "When negative size")]
+        public void Rectangles_ShouldHave_RightSize(int width, int height)
+        {
+            circularCloud.PutNextRectangle(new Size(width, height));
+            circularCloud.Rectangles.First().Size.Should().Be(new Size(width, height));
+        }
 
-//            FillCloudWithRandomRectangles(1);
+        private void FillCloudWithRandomRectangles(int rectangleCount, int seed = 1)
+        {
+            var rand = new Random(seed);
+            for (var i = 0; i < rectangleCount; i++)
+            {
+                var width = rand.Next(5, 20);
+                var heigth = rand.Next(5, 20);
+                circularCloud.PutNextRectangle(new Size(width, heigth));
+            }
+        }
 
-//            circularCloud.Rectangles.First().Location.Should().Be(new Point(0, 0));
-//        }
+        [Test]
+        [Timeout(1000)]
+        public void CircularCloudLayouter_FirstRectangle_HaveRightPosition()
+        {
+            FillCloudWithRandomRectangles(1);
 
-//        [Test]
-//        public void CircularCloudLayouter_Rectangles_AreTight()
-//        {
-//            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings()));
+            var rect = circularCloud.Rectangles.First();
+            rect.Location.Should().Be(new Point(300 - rect.Width / 2, 300 - rect.Height / 2));
+        }
 
-//            for (var i = 0; i < 9; i++)
-//                circularCloud.PutNextRectangle(new Size(20, 20));
+        [Test]
+        public void CircularCloudLayouter_Rectangles_AreTight()
+        {
+            for (var i = 0; i < 9; i++)
+                circularCloud.PutNextRectangle(new Size(20, 20));
 
-//            foreach (var rectangle in circularCloud.Rectangles)
-//            {
-//                rectangle.X.Should().BeGreaterOrEqualTo(-20);
-//                rectangle.Y.Should().BeGreaterOrEqualTo(-20);
-//                rectangle.X.Should().BeLessOrEqualTo(40);
-//                rectangle.Y.Should().BeLessOrEqualTo(20);
-//            }
-//        }
+            foreach (var rectangle in circularCloud.Rectangles)
+            {
+                rectangle.X.Should().BeGreaterOrEqualTo(-30 + circularCloud.Center.X);
+                rectangle.Y.Should().BeGreaterOrEqualTo(-30 + circularCloud.Center.Y);
+                rectangle.X.Should().BeLessOrEqualTo(30 + circularCloud.Center.X);
+                rectangle.Y.Should().BeLessOrEqualTo(30 + circularCloud.Center.Y);
+            }
+        }
 
-//        [Test]
-//        public void Rectangles_ShouldNotIntersect_WhenMoreThanOneRectangle()
-//        {
-//            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings()));
+        [Test]
+        public void Rectangles_ShouldNotIntersect_WhenMoreThanOneRectangle()
+        {
+            FillCloudWithRandomRectangles(100);
+            for (var i = 0; i < circularCloud.Rectangles.Count; i++)
+                for (var j = 0; j < circularCloud.Rectangles.Count; j++)
+                {
+                    if (i == j) continue;
+                    circularCloud.Rectangles[i].Should()
+                        .Match(x => !((Rectangle)x).IntersectsWith(circularCloud.Rectangles[j]),
+                            circularCloud.Rectangles[j].ToTestString());
+                }
+        }
+    }
 
-//            FillCloudWithRandomRectangles(100);
-//            for (var i = 0; i < circularCloud.Rectangles.WordCount; i++)
-//                for (var j = 0; j < circularCloud.Rectangles.WordCount; j++)
-//                {
-//                    if (i == j) continue;
-//                    circularCloud.Rectangles[i].Should()
-//                        .Match(x => !((Rectangle)x).IntersectsWith(circularCloud.Rectangles[j]),
-//                            circularCloud.Rectangles[j].ToTestString());
-//                }
-//        }
-
-//        [TestCase(10, 10, TestName = "When positive size")]
-//        [TestCase(0, 0, TestName = "When zero size")]
-//        [TestCase(-10, -10, TestName = "When negative size")]
-//        public void Rectangles_ShouldHave_RightSize(int width, int height)
-//        {
-//            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings()));
-//            circularCloud.PutNextRectangle(new Size(width, height));
-//            circularCloud.Rectangles.First().Size.Should().Be(new Size(width, height));
-//        }
-
-//        private void FillCloudWithRandomRectangles(int rectangleCount, int seed = 1)
-//        {
-//            var rand = new Random(seed);
-//            for (var i = 0; i < rectangleCount; i++)
-//            {
-//                var width = rand.Next(5, 20);
-//                var heigth = rand.Next(5, 20);
-//                circularCloud.PutNextRectangle(new Size(width, heigth));
-//            }
-//        }
-//    }
-
-//    public static class TestExtensions
-//    {
-//        public static string ToTestString(this Rectangle rectangle)
-//        {
-//            return
-//                $"rectangle IntersectsWith  X={rectangle.X},Y={rectangle.Y},Width={rectangle.Width},Height={rectangle.Height}";
-//        }
-//    }
-//}
+    public static class TestExtensions
+    {
+        public static string ToTestString(this Rectangle rectangle)
+        {
+            return
+                $"rectangle IntersectsWith  X={rectangle.X},Y={rectangle.Y},Width={rectangle.Width},Height={rectangle.Height}";
+        }
+    }
+}
