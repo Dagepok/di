@@ -1,9 +1,11 @@
 using System;
+using FractalPainting.Infrastructure.Common;
 
 namespace FractalPainting.App.Fractals
 {
 	public class DragonSettings
 	{
+        public Palette Pallete { get;  }
 		public double Angle1 { get; set; } = Math.PI / 4;
 		public double Angle2 { get; set; } = 3 * Math.PI / 4;
 		public float ShiftX { get; set; } = 1;

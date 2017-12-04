@@ -1,25 +1,25 @@
 ﻿using FractalPainting.Infrastructure.Common;
-using FractalPainting.Infrastructure.Injection;
 using FractalPainting.Infrastructure.UiActions;
 
 namespace FractalPainting.App.Actions
 {
-	public class PaletteSettingsAction : IUiAction, INeed<Palette>
-	{
-		private Palette palette;
+    public class PaletteSettingsAction : IUiAction
+    {
+        private readonly Palette palette;
 
-		public void SetDependency(Palette dependency)
-		{
-			palette = dependency;
-		}
+        public PaletteSettingsAction(Palette palette)
+        {
+            this.palette = palette;
+        }
 
-		public string Category => "Настройки";
-		public string Name => "Палитра...";
-		public string Description => "Цвета для рисования фракталов";
 
-		public void Perform()
-		{
-			SettingsForm.For(palette).ShowDialog();
-		}
-	}
+        public string Category => "Настройки";
+        public string Name => "Палитра...";
+        public string Description => "Цвета для рисования фракталов";
+
+        public void Perform()
+        {
+            SettingsForm.For(palette).ShowDialog();
+        }
+    }
 }

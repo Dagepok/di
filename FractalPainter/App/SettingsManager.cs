@@ -47,8 +47,6 @@ namespace FractalPainting.App
 		}
 
 		public void Save(AppSettings settings)
-		{
-			storage.Set(settingsFilename, serializer.Serialize(settings));
-		}
+            => storage.Set(settingsFilename, serializer.Serialize(settings));
 	}
 }
