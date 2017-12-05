@@ -13,8 +13,8 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
         public PartOfSpeechFilter(Settings.Settings settings)
         {
             suitablePos = settings.SuitablePos.Equals(PartsOfSpeech.None)
-                ? new[] { PartsOfSpeech.Adjective, PartsOfSpeech.Noun, PartsOfSpeech.Verb }
-                : new[] { settings.SuitablePos };
+                ? new[] {PartsOfSpeech.Adjective, PartsOfSpeech.Noun, PartsOfSpeech.Verb}
+                : new[] {settings.SuitablePos};
         }
 
         public List<string> GetSuitableWords(IEnumerable<string> words)
@@ -26,7 +26,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
                 foreach (var word in words)
                 {
                     var stem = hunspell.Stem(word).FirstOrDefault() ?? word;
-                    var pos = PartOfSpeechGetter.GetPartOfSpeech(posTagger.Tag(new[] { word })[0].ToLowerInvariant());
+                    var pos = PartOfSpeechGetter.GetPartOfSpeech(posTagger.Tag(new[] {word})[0].ToLowerInvariant());
                     if (stem.Length > 3 && suitablePos.Contains(pos))
                         result.Add(stem);
                 }
@@ -38,7 +38,9 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
         {
             POSModel posModel;
             using (var modelFile = new FileStream("en-pos-maxent.bin", FileMode.Open))
+            {
                 posModel = new POSModel(modelFile);
+            }
             return new POSTaggerME(posModel);
         }
     }

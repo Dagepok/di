@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
 {
@@ -16,11 +15,14 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
                 {"jj", PartsOfSpeech.Adjective},
                 {"rb", PartsOfSpeech.Adjective},
                 {"adj", PartsOfSpeech.Adjective},
-                {"adjective", PartsOfSpeech.Adjective},
+                {"adjective", PartsOfSpeech.Adjective}
             };
+
         public static PartsOfSpeech GetPartOfSpeech(string alias)
-            => alias == null  || !PartOfSpeech.ContainsKey(alias.ToLowerInvariant())
-            ? PartsOfSpeech.None
-            : PartOfSpeech[alias.ToLowerInvariant()];
+        {
+            return alias == null || !PartOfSpeech.ContainsKey(alias.ToLowerInvariant())
+                ? PartsOfSpeech.None
+                : PartOfSpeech[alias.ToLowerInvariant()];
+        }
     }
 }
