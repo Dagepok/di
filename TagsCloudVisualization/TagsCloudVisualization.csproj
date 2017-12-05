@@ -108,9 +108,15 @@
     <Compile Include="TagsCloudVisualizator.cs" />
     <Compile Include="Settings\TagSettings.cs" />
     <Compile Include="Settings\TxtReaderSettings.cs" />
-    <Compile Include="Words Preporation\Words Checker\AbstractWordChecker.cs" />
-    <Compile Include="Words Preporation\Words Checker\PartOfSpeechChecker.cs" />
-    <Compile Include="Words Preporation\Words Checker\PartOfSpeechCheckerTest.cs" />
+    <Compile Include="Words Preporation\WordConverter\IWordConverter.cs" />
+    <Compile Include="Words Preporation\WordConverter\ToLowerCaseConverter.cs" />
+    <Compile Include="Words Preporation\WordConverter\WordConverterComposition.cs" />
+    <Compile Include="Words Preporation\Words Filters\AbstractWordFilter.cs" />
+    <Compile Include="Words Preporation\Words Filters\PartOfSpeech\PartOfSpeechEnum.cs" />
+    <Compile Include="Words Preporation\Words Filters\PartOfSpeech\PartOfSpeechFilter.cs" />
+    <Compile Include="Words Preporation\Words Filters\PartOfSpeech\PartOfSpeechFilterTest.cs" />
+    <Compile Include="Words Preporation\Words Filters\PartOfSpeech\PartOfSpeechGetter.cs" />
+    <Compile Include="Words Preporation\WordsCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

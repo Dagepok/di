@@ -4,6 +4,6 @@ namespace TagsCloudVisualization.Words_Preporation.FileReader
 {
     public interface IFileReader
     {
-        IEnumerable<string> GetWords();
+        List<string> GetWords();
     }
 }

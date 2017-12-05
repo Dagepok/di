@@ -8,7 +8,9 @@ using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.LogarithmicalSpiral;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Words_Preporation.FileReader;
-using TagsCloudVisualization.Words_Preporation.Words_Checker;
+using TagsCloudVisualization.Words_Preporation.WordConverter;
+using TagsCloudVisualization.Words_Preporation.Words_Filters;
+using TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech;
 
 namespace TagsCloudVisualization
 {
@@ -39,7 +41,10 @@ namespace TagsCloudVisualization
             container.Register(Component.For<ISpiral>().ImplementedBy<LogarithmicSpiral>());
             container.Register(Component.For<IFileReader>().ImplementedBy<TxtReader>());
             container.Register(Component.For<ITagCreator>().ImplementedBy<TagCreator>());
-            container.Register(Component.For<AbstractWordChecker>().ImplementedBy<PartOfSpeechChecker>());
+            container.Register(Component.For<IWordFilter>().ImplementedBy<PartOfSpeechFilter>());
+
+            var converters = new WordConverterComposition(new ToLowerCaseConverter());
+            container.Register(Component.For<WordConverterComposition>().Instance(converters));
 
             container.Register(Component.For<TxtReaderSettings>().IsDefault());
             container.Register(Component.For<LogarithmicSpiralSettings>().IsDefault());

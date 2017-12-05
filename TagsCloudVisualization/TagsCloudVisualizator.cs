@@ -1,29 +1,37 @@
 ﻿using TagsCloudVisualization.CloudDrawer;
+using TagsCloudVisualization.Words_Preporation;
 using TagsCloudVisualization.Words_Preporation.FileReader;
-using TagsCloudVisualization.Words_Preporation.Words_Checker;
+using TagsCloudVisualization.Words_Preporation.WordConverter;
+using TagsCloudVisualization.Words_Preporation.Words_Filters;
 
 namespace TagsCloudVisualization
 {
     public class TagsCloudVisualizator
     {
         public TagsCloudVisualizator(ICloudDrawer drawer, ITagCreator tagCreator, IFileReader reader,
-            AbstractWordChecker wordChecker)
+            IWordFilter wordFilter, WordConverterComposition converters, Settings.Settings settings)
         {
+            WordConverters = converters;
+            Settings = settings;
             Drawer = drawer;
             TagCreator = tagCreator;
             Reader = reader;
-            WordChecker = wordChecker;
+            WordFilter = wordFilter;
         }
 
+        private Settings.Settings Settings { get; }
         private ICloudDrawer Drawer { get; }
         private ITagCreator TagCreator { get; }
         private IFileReader Reader { get; }
-        private AbstractWordChecker WordChecker { get; }
+        private IWordFilter WordFilter { get; }
+        private WordConverterComposition WordConverters { get; }
 
         public void DrawCloud()
         {
-            var words = WordChecker.GetSuitableWords(Reader.GetWords());
-            var wordsFrequency = WordChecker.GetWordsFrequency(words);
+            var words = Reader.GetWords();
+            words = WordConverters.ConvertByAll(words);
+            words = WordFilter.GetSuitableWords(words);
+            var wordsFrequency = WordsCounter.GetWordsFrequency(words, Settings.WordCount);
             var tags = TagCreator.GetTags(wordsFrequency);
             Drawer.Draw(tags);
         }

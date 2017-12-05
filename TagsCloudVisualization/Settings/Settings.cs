@@ -1,27 +1,27 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech;
 
 namespace TagsCloudVisualization.Settings
 {
     public class Settings
     {
-        public int Width = 600;
+        public string FontName = "Comic Sans MS";
         public int Height = 600;
-        public int WordCount = 100;
+        public int MaxFontSize = 40;
+        public int MinFontSize = 20;
         public string OutFileName = "cloud";
         public ImageFormat OutImageFormat = ImageFormat.Png;
         public string SourcePath = "words.txt";
-        public int MaxFontSize = 40;
-        public int MinFontSize = 20;
+        public int Width = 600;
+        public int WordCount = 100;
 
-        public string SuitablePos { get; set; }
-        public string FontName = "Comic Sans MS";
-        public Point Center { get; set; }
-        public Settings() => Center = new Point(Width / 2, Height / 2);
+        public Settings() 
+            => Center = new Point(Width / 2, Height / 2);
 
         public Settings(Options opt)
         {
-            SuitablePos = opt.SuitablePos;
+            SuitablePos = PartOfSpeechGetter.GetPartOfSpeech(opt.SuitablePos);
             Width = opt.Width;
             Height = opt.Height;
             WordCount = opt.WordCount;
@@ -33,5 +33,7 @@ namespace TagsCloudVisualization.Settings
             MinFontSize = MaxFontSize / 4;
         }
 
+        public PartsOfSpeech SuitablePos { get; set; }
+        public Point Center { get; set; }
     }
 }
