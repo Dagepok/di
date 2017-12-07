@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace TagsCloudVisualization.Words_Preporation
 {
-    public static class WordsCounter
+    public class WordsCounter
     {
-        public static Dictionary<string, int> GetWordsFrequency(List<string> words, int wordsCount)
+        public Dictionary<string, int> GetWordsFrequency(List<string> words, int wordsCount)
             => words.GroupBy(word => word)
                 .OrderByDescending(x => x.Count())
                 .Take(wordsCount)

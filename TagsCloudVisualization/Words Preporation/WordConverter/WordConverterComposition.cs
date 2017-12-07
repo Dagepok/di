@@ -12,9 +12,10 @@ namespace TagsCloudVisualization.Words_Preporation.WordConverter
         public WordConverterComposition(params IWordConverter[] converters)
             => this.converters = converters;
 
-        public List<string> ConvertByAll(IEnumerable<string> words)
+        public List<string> Convert(IEnumerable<string> words)
         {
-            converters.ForEach((x, i) => words = x.Convert(words));
+            foreach (var wordConverter in converters)
+                words = wordConverter.Convert(words);
             return words.ToList();
         }
     }

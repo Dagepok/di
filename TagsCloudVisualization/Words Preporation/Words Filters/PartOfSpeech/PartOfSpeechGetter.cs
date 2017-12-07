@@ -18,7 +18,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
                 {"adjective", PartsOfSpeech.Adjective}
             };
 
-        public static PartsOfSpeech GetPartOfSpeech(string alias)
+        public PartsOfSpeech GetPartOfSpeech(string alias)
         {
             return alias == null || !PartOfSpeech.ContainsKey(alias.ToLowerInvariant())
                 ? PartsOfSpeech.None
