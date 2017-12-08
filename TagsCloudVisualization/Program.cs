@@ -25,7 +25,7 @@ namespace TagsCloudVisualization
             if (!Parser.Default.ParseArguments(args, options))
                 return;
 
-            var settings = new Settings.Settings(options);
+            var settings = new Settings.Settings(options, new PartOfSpeechGetter());
 
             var cloud = GetVisualizator(settings);
             cloud.DrawCloud();

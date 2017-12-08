@@ -19,9 +19,9 @@ namespace TagsCloudVisualization.Settings
         public Settings() 
             => Center = new Point(Width / 2, Height / 2);
 
-        public Settings(Options opt)
+        public Settings(Options opt, PartOfSpeechGetter posGetter)
         {
-            SuitablePos = PartOfSpeechGetter.GetPartOfSpeech(opt.SuitablePos);
+            SuitablePos = posGetter.GetPartOfSpeech(opt.SuitablePos);
             Width = opt.Width;
             Height = opt.Height;
             WordCount = opt.WordCount;

@@ -19,6 +19,7 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.Loga
             => 1 / b * Math.Log(r / a);
 
         private LogarithmicSpiral spiral;
+
         [SetUp]
         public void SetUp()
         {

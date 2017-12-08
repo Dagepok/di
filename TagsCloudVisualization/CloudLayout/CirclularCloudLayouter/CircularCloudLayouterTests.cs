@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
+using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.LogarithmicalSpiral;
 using TagsCloudVisualization.Settings;
 
@@ -15,8 +17,10 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter
         public void SetUp()
         {
             var settings = new Settings.Settings();
-            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings(settings)),
-                settings);
+            var spiral = Substitute.For<ISpiral>();
+            spiral.GetNextPoint().Returns(new PointF(0, 0), new PointF(8, 0), new PointF(7, -5), new PointF(0, -10),
+                new PointF(-10, -10), new PointF(-15, 0), new PointF(-12, 12), new PointF(0, 15), new PointF(15, 15));
+            circularCloud = new CircularCloudLayouter(spiral, settings);
         }
 
         private CircularCloudLayouter circularCloud;
@@ -59,12 +63,15 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter
             FillCloudWithRandomRectangles(1);
 
             var rect = circularCloud.Rectangles.First();
-            rect.Location.Should().Be(new Point(300 - rect.Width / 2, 300 - rect.Height / 2));
+            rect.Location.Should().Be(new Point(- rect.Width / 2, - rect.Height / 2));
         }
 
         [Test]
         public void CircularCloudLayouter_Rectangles_AreTight()
         {
+            var settings = new Settings.Settings();
+            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings(settings)), settings);
+
             for (var i = 0; i < 9; i++)
                 circularCloud.PutNextRectangle(new Size(20, 20));
 
