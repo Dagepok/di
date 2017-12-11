@@ -94,6 +94,7 @@
     <Compile Include="CloudDrawer\FileCloudDrawer.cs" />
     <Compile Include="CloudLayout\ICloudLayouter.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Tag\TagCreatorTests.cs" />
     <Compile Include="Words Preporation\FileReader\IFileReader.cs" />
     <Compile Include="Words Preporation\FileReader\TxtReader.cs" />
     <Compile Include="Tag\ITagCreator.cs" />
