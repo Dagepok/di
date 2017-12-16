@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ResultOf;
 
 namespace TagsCloudVisualization
 {
     public interface ITagCreator
     {
-        List<Tag> GetTags(Dictionary<string, int> wordFrequency);
+        Result<List<Tag>> GetTags(Dictionary<string, int> wordFrequency);
     }
 }

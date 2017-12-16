@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ResultOf;
 
 namespace TagsCloudVisualization.Words_Preporation.WordConverter
 {
     public interface IWordConverter
     {
-        List<string> Convert(IEnumerable<string> words);
+        Result<List<string>> Convert(IEnumerable<string> words);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ResultOf;
 
 namespace TagsCloudVisualization.Words_Preporation.Words_Filters
 {
     public interface IWordFilter
     {
-        List<string> GetSuitableWords(IEnumerable<string> words);
+        Result<List<string>> GetSuitableWords(IEnumerable<string> words);
     }
 }

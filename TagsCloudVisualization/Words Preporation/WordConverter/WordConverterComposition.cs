@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using SharpNL.Extensions;
+using ResultOf;
 
 namespace TagsCloudVisualization.Words_Preporation.WordConverter
 {
@@ -10,13 +9,21 @@ namespace TagsCloudVisualization.Words_Preporation.WordConverter
         private readonly IEnumerable<IWordConverter> converters;
 
         public WordConverterComposition(params IWordConverter[] converters)
-            => this.converters = converters;
+        {
+            this.converters = converters;
+        }
 
-        public List<string> Convert(IEnumerable<string> words)
+        public Result<List<string>> Convert(IEnumerable<string> words)
         {
             foreach (var wordConverter in converters)
-                words = wordConverter.Convert(words);
-            return words.ToList();
+            {
+                var result = wordConverter.Convert(words);
+                if (result.IsSuccess)
+                    words = result.Value;
+                else
+                    return result;
+            }
+            return Result.Ok(words.ToList());
         }
     }
 }

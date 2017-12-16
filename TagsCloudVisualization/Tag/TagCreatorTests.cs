@@ -33,7 +33,7 @@ namespace TagsCloudVisualization
         {
             var tags = creator.GetTags(words);
 
-            tags.Should().HaveCount(2);
+            tags.Value.Should().HaveCount(2);
         }
 
         [Test]
@@ -41,14 +41,14 @@ namespace TagsCloudVisualization
         {
             var tags = creator.GetTags(words);
 
-            tags[0].Font.Size.Should().NotBe(tags[1].Font.Size);
+            tags.Value[0].Font.Size.Should().NotBe(tags.Value[1].Font.Size);
         }
         [Test]
         public void TagCreator_ShouldGet_DifferentColors()
         {
             var tags = creator.GetTags(words);
 
-            tags[0].Color.Should().NotBe(tags[1].Color);
+            tags.Value[0].Color.Should().NotBe(tags.Value[1].Color);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace TagsCloudVisualization
         {
             var tags = creator.GetTags(words);
 
-            tags.Select(x => x.Word).Should().BeEquivalentTo(words.Keys);
+            tags.Value.Select(x => x.Word).Should().BeEquivalentTo(words.Keys);
         
         }
     }

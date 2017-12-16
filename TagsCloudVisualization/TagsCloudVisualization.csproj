@@ -86,7 +86,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\ConsoleIO.cs" />
+    <Compile Include="IO\IIOController.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="Settings\DrawerSettings.cs" />
     <Compile Include="CloudDrawer\ICloudDrawer.cs" />
     <Compile Include="CloudLayout\CirclularCloudLayouter\CircularCloudLayouter.cs" />

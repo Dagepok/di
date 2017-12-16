@@ -6,6 +6,7 @@ using TagsCloudVisualization.CloudLayout;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.LogarithmicalSpiral;
+using TagsCloudVisualization.IO;
 using TagsCloudVisualization.Settings;
 using TagsCloudVisualization.Words_Preporation;
 using TagsCloudVisualization.Words_Preporation.FileReader;
@@ -19,23 +20,17 @@ namespace TagsCloudVisualization
     {
         private static void Main(string[] args)
         {
+            IIoController io = new ConsoleIo(args);
 
-            var options = new Options();
-
-            if (!Parser.Default.ParseArguments(args, options))
-                return;
-
-            var settings = new Settings.Settings(options, new PartOfSpeechGetter());
-
-            var cloud = GetVisualizator(settings);
+            var cloud = GetVisualizator(io);
             cloud.DrawCloud();
         }
 
-        private static TagsCloudVisualizator GetVisualizator(Settings.Settings settings)
+        private static TagsCloudVisualizator GetVisualizator(IIoController io)
         {
             var container = new WindsorContainer();
 
-            container.Register(Component.For<Settings.Settings>().Instance(settings));
+            container.Register(Component.For<Settings.Settings>().Instance(io.Settings));
 
             container.Register(Component.For<ICloudDrawer>().ImplementedBy<FileCloudDrawer>());
             container.Register(Component.For<ICloudLayouter>().ImplementedBy<CircularCloudLayouter>());
@@ -43,7 +38,7 @@ namespace TagsCloudVisualization
             container.Register(Component.For<IFileReader>().ImplementedBy<TxtReader>());
             container.Register(Component.For<ITagCreator>().ImplementedBy<TagCreator>());
             container.Register(Component.For<IWordFilter>().ImplementedBy<PartOfSpeechFilter>());
-
+            container.Register(Component.For<IIoController>().Instance(io));
             var converters = new WordConverterComposition(new ToLowerCaseConverter());
             container.Register(Component.For<WordConverterComposition>().Instance(converters));
 

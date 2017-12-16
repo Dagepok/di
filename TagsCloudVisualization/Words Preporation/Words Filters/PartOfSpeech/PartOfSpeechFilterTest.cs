@@ -11,7 +11,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
             var checker = new PartOfSpeechFilter(new Settings.Settings(), new PartOfSpeechGetter());
 
             var words = checker.GetSuitableWords(new[] { "the", "Alice" });
-            words.Should().HaveCount(1);
+            words.Value.Should().HaveCount(1);
         }
         [Test]
         public void POSChecker_ShouldSkip_Pronouns()
@@ -19,7 +19,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
             var checker = new PartOfSpeechFilter(new Settings.Settings(), new PartOfSpeechGetter());
 
             var words = checker.GetSuitableWords(new[] { "I", "me", "door" });
-            words.Should().HaveCount(1);
+            words.Value.Should().HaveCount(1);
         }
         [Test]
         public void POSChecker_ShouldSkip_NotVerbs()
@@ -28,7 +28,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
             var checker = new PartOfSpeechFilter(settings, new PartOfSpeechGetter());
 
             var words = checker.GetSuitableWords(new[] { "play", "Alice" });
-            words.Should().NotContain("Alice");
+            words.Value.Should().NotContain("Alice");
         }
     }
 }

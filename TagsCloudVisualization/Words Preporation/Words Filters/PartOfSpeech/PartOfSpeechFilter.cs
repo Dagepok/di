@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using NHunspell;
+using ResultOf;
 using SharpNL.POSTag;
 
 namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
@@ -19,7 +20,10 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
                 : new[] { settings.SuitablePos };
         }
 
-        public List<string> GetSuitableWords(IEnumerable<string> words)
+        public Result<List<string>> GetSuitableWords(IEnumerable<string> words)
+            => Result.Of(() => GetSuitableWordsList(words));
+
+        private List<string> GetSuitableWordsList(IEnumerable<string> words)
         {
             using (var hunspell = new Hunspell("en_us.aff", "en_us.dic"))
             {
@@ -37,8 +41,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
                 }
             }
         }
-
-        private POSTaggerME GetTagger()
+        private static POSTaggerME GetTagger()
         {
             POSModel posModel;
             using (var modelFile = new FileStream("en-pos-maxent.bin", FileMode.Open))
