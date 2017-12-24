@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using FluentAssertions;
-using NSubstitute;
-using NSubstitute.Extensions;
 using NUnit.Framework;
 using TagsCloudVisualization.Settings;
 
@@ -12,32 +10,35 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.Loga
     [TestFixture]
     public class LogarithmicSpiralTests
     {
-        private static double CalculateDistanceBetween(PointF point, PointF center) 
-            => Math.Sqrt(Math.Pow(point.X - center.X, 2) + Math.Pow(point.Y - center.Y, 2));
-
-        private static double DeflectionAngle(double b, double a, double r) 
-            => 1 / b * Math.Log(r / a);
-
-        private LogarithmicSpiral spiral;
-
         [SetUp]
         public void SetUp()
         {
             spiral = new LogarithmicSpiral(new LogarithmicSpiralSettings(new Settings.Settings()));
         }
 
+        private static double CalculateDistanceBetween(PointF point, PointF center)
+        {
+            return Math.Sqrt(Math.Pow(point.X - center.X, 2) + Math.Pow(point.Y - center.Y, 2));
+        }
+
+        private static double DeflectionAngle(double b, double a, double r)
+        {
+            return 1 / b * Math.Log(r / a);
+        }
+
+        private LogarithmicSpiral spiral;
+
         [Test]
         public void GetNextPoint_FirstPoint_ShouldBeCenter()
         {
-
             var point = spiral.GetNextPoint();
-                
+
             point.Should().Be(spiral.Settings.Center);
         }
 
         [Test]
-        public void GetNextPoint_ShouldGetPoints_FromSpiral() { 
-
+        public void GetNextPoint_ShouldGetPoints_FromSpiral()
+        {
             var pointAngles = new List<double>();
             var pointDistances = new List<double>();
 
@@ -54,7 +55,6 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.Loga
         [Test]
         public void GetNextPoint_ShouldNot_GetEqualPoints()
         {
-            
             var points = new List<PointF>();
             for (var i = 0; i < 100; i++)
             {

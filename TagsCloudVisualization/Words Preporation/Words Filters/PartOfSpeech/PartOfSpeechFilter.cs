@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using NHunspell;
-using ResultOf;
 using SharpNL.POSTag;
 
 namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech

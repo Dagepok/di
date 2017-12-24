@@ -63,14 +63,15 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter
             FillCloudWithRandomRectangles(1);
 
             var rect = circularCloud.Rectangles.First();
-            rect.Location.Should().Be(new Point(- rect.Width / 2, - rect.Height / 2));
+            rect.Location.Should().Be(new Point(-rect.Width / 2, -rect.Height / 2));
         }
 
         [Test]
         public void CircularCloudLayouter_Rectangles_AreTight()
         {
             var settings = new Settings.Settings();
-            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings(settings)), settings);
+            circularCloud = new CircularCloudLayouter(new LogarithmicSpiral(new LogarithmicSpiralSettings(settings)),
+                settings);
 
             for (var i = 0; i < 9; i++)
                 circularCloud.PutNextRectangle(new Size(20, 20));
@@ -89,13 +90,13 @@ namespace TagsCloudVisualization.CloudLayout.CirclularCloudLayouter
         {
             FillCloudWithRandomRectangles(100);
             for (var i = 0; i < circularCloud.Rectangles.Count; i++)
-                for (var j = 0; j < circularCloud.Rectangles.Count; j++)
-                {
-                    if (i == j) continue;
-                    circularCloud.Rectangles[i].Should()
-                        .Match(x => !((Rectangle)x).IntersectsWith(circularCloud.Rectangles[j]),
-                            circularCloud.Rectangles[j].ToTestString());
-                }
+            for (var j = 0; j < circularCloud.Rectangles.Count; j++)
+            {
+                if (i == j) continue;
+                circularCloud.Rectangles[i].Should()
+                    .Match(x => !((Rectangle) x).IntersectsWith(circularCloud.Rectangles[j]),
+                        circularCloud.Rectangles[j].ToTestString());
+            }
         }
     }
 

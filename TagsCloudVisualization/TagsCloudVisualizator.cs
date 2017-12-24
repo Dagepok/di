@@ -1,6 +1,6 @@
-﻿using System;
-using TagsCloudVisualization.CloudDrawer;
+﻿using TagsCloudVisualization.CloudDrawer;
 using TagsCloudVisualization.IO;
+using TagsCloudVisualization.Tags;
 using TagsCloudVisualization.Words_Preporation;
 using TagsCloudVisualization.Words_Preporation.FileReader;
 using TagsCloudVisualization.Words_Preporation.WordConverter;
@@ -36,29 +36,13 @@ namespace TagsCloudVisualization
 
         public void DrawCloud()
         {
-            var words = Reader.GetWords();
-            if (!words.IsSuccess)
-            {
-                Io.Output(words.Error);
-                return;
-            }
-            words = WordConverters.Convert(words.Value);
-            if (!words.IsSuccess)
-            {
-                Io.Output(words.Error);
-                return;
-            }
-            words = WordFilter.GetSuitableWords(words.Value);
-            if (!words.IsSuccess)
-            {
-                Io.Output(words.Error);
-                return;
-            }
-            var wordsFrequency = WordsCounter.GetWordsFrequency(words.GetValueOrThrow(), Settings.WordCount);
-            var tags = TagCreator.GetTags(wordsFrequency);
-            if (tags.IsSuccess)
-                Drawer.Draw(tags.GetValueOrThrow());
-            else Io.Output(tags.Error);
+            Result.Of(() => Reader.GetWords())
+                .Then(w => WordConverters.Convert(w.Value))
+                .Then(w => WordFilter.GetSuitableWords(w.Value))
+                .Then(w => WordsCounter.GetWordsFrequency(w.Value, Settings.WordCount))
+                .Then(w => TagCreator.GetTags(w))
+                .Then(t => Drawer.Draw(t.Value))
+                .OnFail(x => Io.Output(x));
         }
     }
 }

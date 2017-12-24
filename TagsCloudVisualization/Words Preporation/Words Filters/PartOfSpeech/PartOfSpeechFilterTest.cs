@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿    using FluentAssertions;
 using NUnit.Framework;
 
 namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
@@ -19,7 +19,7 @@ namespace TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech
             var checker = new PartOfSpeechFilter(new Settings.Settings(), new PartOfSpeechGetter());
 
             var words = checker.GetSuitableWords(new[] { "I", "me", "door" });
-            words.Value.Should().HaveCount(1);
+            words.Value.Should().HaveCount(1); 
         }
         [Test]
         public void POSChecker_ShouldSkip_NotVerbs()

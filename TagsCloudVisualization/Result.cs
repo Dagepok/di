@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ResultOf
+namespace TagsCloudVisualization
 {
     public class None
     {
@@ -16,6 +16,7 @@ namespace ResultOf
             Error = error;
             Value = value;
         }
+
         public static implicit operator Result<T>(T v)
         {
             return Result.Ok(v);
@@ -23,11 +24,13 @@ namespace ResultOf
 
         public string Error { get; }
         internal T Value { get; }
+
         public T GetValueOrThrow()
         {
             if (IsSuccess) return Value;
             throw new InvalidOperationException($"No value. Only Error {Error}");
         }
+
         public bool IsSuccess => Error == null;
     }
 
@@ -42,6 +45,7 @@ namespace ResultOf
         {
             return new Result<T>(null, value);
         }
+
         public static Result<None> Ok()
         {
             return Ok<None>(null);
@@ -84,12 +88,6 @@ namespace ResultOf
             return input.Then(inp => Of(() => continuation(inp)));
         }
 
-        public static Result<None> Then<TInput, TOutput>(
-            this Result<TInput> input,
-            Action<TInput> continuation)
-        {
-            return input.Then(inp => OfAction(() => continuation(inp)));
-        }
 
         public static Result<None> Then<TInput>(
             this Result<TInput> input,
@@ -98,7 +96,7 @@ namespace ResultOf
             return input.Then(inp => OfAction(() => continuation(inp)));
         }
 
-        public static Result<TOutput> Then<TInput, TOutput>(
+        private static Result<TOutput> Then<TInput, TOutput>(
             this Result<TInput> input,
             Func<TInput, Result<TOutput>> continuation)
         {

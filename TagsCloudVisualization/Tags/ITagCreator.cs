@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ResultOf;
 
-namespace TagsCloudVisualization
+namespace TagsCloudVisualization.Tags
 {
     public interface ITagCreator
     {

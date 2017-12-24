@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using NUnit.Framework;
-using ResultOf;
 using TagsCloudVisualization.CloudLayout;
 using TagsCloudVisualization.Settings;
 
-namespace TagsCloudVisualization
+namespace TagsCloudVisualization.Tags
 {
     public class TagCreator : ITagCreator
     {
@@ -36,13 +34,12 @@ namespace TagsCloudVisualization
 
         private int GetFontSize(int frequency, double maxFrequency)
         {
-            return (int)(frequency / maxFrequency * (tagSettings.MaxFontSize - tagSettings.MinFontSize) +
+            return (int) (frequency / maxFrequency * (tagSettings.MaxFontSize - tagSettings.MinFontSize) +
                           tagSettings.MinFontSize);
         }
 
         private Result<Tag> GetTag(string word, int frequency, int maxFrequency)
         {
-
             var fontSize = GetFontSize(frequency, maxFrequency);
             var font = Result.Of(() =>
             {
@@ -59,12 +56,16 @@ namespace TagsCloudVisualization
             var rect = layouter.PutNextRectangle(size.Value);
             return !IsTagInWindow(rect)
                 ? Result.Fail<Tag>("Size of image too low")
-                : Result.Ok(new Tag(rect, tagSettings.FontColors[frequency % tagSettings.FontColors.Length], word, font.Value));
+                : Result.Ok(new Tag(rect, tagSettings.FontColors[frequency % tagSettings.FontColors.Length], word,
+                    font.Value));
         }
 
-        private bool IsTagInWindow(Rectangle rect) => rect.Right < tagSettings.RightBorder
-                                                      && rect.Left > tagSettings.LeftBorder
-                                                      && rect.Top > tagSettings.TopBorder
-                                                      && rect.Bottom < tagSettings.BottomBorder;
+        private bool IsTagInWindow(Rectangle rect)
+        {
+            return rect.Right < tagSettings.RightBorder
+                   && rect.Left > tagSettings.LeftBorder
+                   && rect.Top > tagSettings.TopBorder
+                   && rect.Bottom < tagSettings.BottomBorder;
+        }
     }
 }

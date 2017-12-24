@@ -1,6 +1,5 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using CommandLine;
 using TagsCloudVisualization.CloudDrawer;
 using TagsCloudVisualization.CloudLayout;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter;
@@ -8,6 +7,7 @@ using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals;
 using TagsCloudVisualization.CloudLayout.CirclularCloudLayouter.Spirals.LogarithmicalSpiral;
 using TagsCloudVisualization.IO;
 using TagsCloudVisualization.Settings;
+using TagsCloudVisualization.Tags;
 using TagsCloudVisualization.Words_Preporation;
 using TagsCloudVisualization.Words_Preporation.FileReader;
 using TagsCloudVisualization.Words_Preporation.WordConverter;
@@ -16,7 +16,7 @@ using TagsCloudVisualization.Words_Preporation.Words_Filters.PartOfSpeech;
 
 namespace TagsCloudVisualization
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
